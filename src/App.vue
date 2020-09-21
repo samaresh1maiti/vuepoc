@@ -1,74 +1,112 @@
 <template>
   <div id="app">
-    <Header
-      :numCorrect="numCorrect"
-      :numTotal="numTotal"
-    />
+    <b-row>
+      <b-col style="padding-left:10%">
+        <Burger></Burger>
+      </b-col>
+      <b-col cols="4">
+        <LanguageSwitcher></LanguageSwitcher>
+      </b-col>
+    </b-row>
 
-    <b-container class="bv-example-row">
-      <b-row>
-        <b-col sm="6" offset="3">
-          <QuestionBox
-            v-if="questions.length"
-            :currentQuestion="questions[index]"
-            :next="next"
-            :increment="increment"
-          />
-        </b-col>
-      </b-row>
-    </b-container>
+    <div id="app1">
+      <!-- <nav class="main-nav"></nav> -->
+
+      <SideBar>
+        <ul class="sidebar-panel-nav">
+          <li>
+            <router-link to="/">Home</router-link>
+          </li>
+          <li>
+            <router-link to="/${$i18n.locale}/InputForm">Input Form</router-link>
+          </li>
+          <li>
+            <router-link to="/${$i18n.locale}/setting">Setting</router-link>
+          </li>
+          <li>
+            <router-link to="/${$i18n.locale}/Report">Report</router-link>
+          </li>
+          <li>
+            <router-link to="/${$i18n.locale}/Barchart">PieChart</router-link>
+          </li>
+        </ul>
+      </SideBar>
+    </div>
+
+    <!-- <b-container> -->
+    <router-view />
+    <!-- </b-container> -->
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import QuestionBox from './components/QuestionBox.vue'
+// import EnterData from './components/EnterData'
+// import InputForm from './components/InputForm'
+import SideBar from "./components/Sidebar";
+import Burger from "./components/Burger";
+import LanguageSwitcher from "./components/LanguageSwitcher";
 export default {
-  name: 'app',
+  name: "App",
   components: {
-    Header,
-    QuestionBox
+    // EnterData,
+    Burger,
+    SideBar,
+    LanguageSwitcher,
   },
-  data() {
-    return {
-      questions: [],
-      index: 0,
-      numCorrect: 0,
-      numTotal: 0
-    }
-  },
-  methods: {
-    next() {
-      this.index++
-    },
-    increment(isCorrect) {
-      if (isCorrect) {
-        this.numCorrect++
-      }
-      this.numTotal++
-    }
-  },
-  mounted: function() {
-    fetch('https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=multiple', {
-      method: 'get'
-    })
-      .then((response) => {
-        return response.json()
-      })
-      .then((jsonData) => {
-        this.questions = jsonData.results
-      })
-  }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  /* color: #2c3e50; */
   /* margin-top: 60px; */
+}
+html {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-family: "Lato";
+  height: 100%;
+  /* background: rgb(101,31,87); */
+  /* background: linear-gradient(45deg, rgba(101,31,87,1) 0%, rgba(225,113,87,1) 48%, rgba(249,248,113,1) 100%); */
+}
+
+/* .logo {
+   align-self: center;
+   color: #fff;
+   font-weight: bold;
+   font-family: 'Lato'
+ } */
+
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 20px;
+}
+
+ul.sidebar-panel-nav {
+  list-style-type: none;
+}
+ul.sidebar-panel-nav > li {
+  border: 2px solid black;
+  padding-top: 10px;
+}
+
+ul.sidebar-panel-nav > li > a {
+  color: #285085;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  display: block;
+  padding-bottom: 0.5em;
 }
 </style>
